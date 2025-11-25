@@ -7,7 +7,7 @@ interface Employee {
   position: string
 }
 
-const API_BASE_URL = 'http://localhost:8080/api/employees'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/employees'
 
 function App() {
   const [employees, setEmployees] = useState<Employee[]>([])
