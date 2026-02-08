@@ -29,10 +29,11 @@ jobs:
             echo "📂 Move to FE directory"
             cd /home/ubuntu/power/FE
 
+            echo "🛑 Kill existing Vite server (5173)"
+            screen -X -S "react-server" quit 2>/dev/null
             
-
             echo "🚀 Start Vite dev server"
-            nohup npm run dev & > vite.log 2>&1 &
+            screen -dmS "react-server" npm run dev
 
             echo "⏳ Waiting for Vite server to be ready (5173)..."
             for i in {1..40}; do
