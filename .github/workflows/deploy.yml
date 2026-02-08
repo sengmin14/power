@@ -29,20 +29,20 @@ jobs:
             echo "📂 Move to FE directory"
             cd /home/ubuntu/power/FE
 
-            echo "🛑 Kill existing Vite server (5173)"
-            sudo fuser -k -n tcp 5173 || true
+            
 
             echo "🚀 Start Vite dev server"
             nohup npm run dev > vite.log 2>&1 &
 
             echo "⏳ Waiting for Vite server to be ready (5173)..."
-            for i in {1..60}; do
-              if lsof -i :5173 >/dev/null; then
+            for i in {1..40}; do
+              if ss -lntp | grep ':5173' >/dev/null; then
+
                 echo "✅ Vite server is up"
                 exit 0
               fi
               sleep 1
             done
 
-            echo "❌ Vite server did not start within 60 seconds"
+            echo "❌ Vite server did not start within 40 seconds"
             exit 1
