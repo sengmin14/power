@@ -29,8 +29,7 @@ jobs:
             echo "📂 Move to FE directory"
             cd /home/ubuntu/power/FE
 
-            echo "🛑 Kill existing Vite server (5173)"
-            screen -X -S "react-server" quit 2>/dev/null
+            
             
             echo "🚀 Start Vite dev server"
             screen -dmS "react-server" npm run dev
