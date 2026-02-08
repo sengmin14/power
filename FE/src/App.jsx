@@ -19,7 +19,7 @@ function App() {
       <h1>New React222333</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          count is123 {count}
         </button>
         <p>
           rhinod, skim
