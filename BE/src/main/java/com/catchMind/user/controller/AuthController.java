@@ -1,0 +1,176 @@
+package com.catchMind.user.controller;
+
+import com.catchMind.user.dto.UserDto;
+import com.catchMind.user.service.UserService;
+import com.utils.TokenUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final UserService userService;
+
+    /**
+     * 회원가입
+     * POST /users/auth/signup
+     */
+    @PostMapping("/auth/signup")
+    public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto signupDto) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            UserDto userDto = userService.signup(signupDto);
+            
+            response.put("success", true);
+            response.put("message", "회원가입이 완료되었습니다.");
+            response.put("data", userDto);
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (RuntimeException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            log.error("회원가입 오류", e);
+            response.put("success", false);
+            response.put("message", "회원가입 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * 로그인
+     * POST /users/auth/login
+     */
+    @PostMapping("/auth/login")
+    public ResponseEntity<Map<String, Object>> login(
+            @RequestBody Map<String, String> loginRequest,
+            HttpServletResponse httpResponse) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            String loginId = loginRequest.get("loginId");
+            String password = loginRequest.get("password");
+            
+            if (loginId == null || password == null) {
+                response.put("success", false);
+                response.put("message", "로그인 ID와 비밀번호를 입력해주세요.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+            
+            UserDto userDto = userService.login(loginId, password);
+            
+            // JWT 토큰 생성
+            String accessToken = TokenUtils.generateJwt(userDto);
+            String refreshToken = TokenUtils.generateRefreshToken(userDto);
+            
+            // HttpOnly Cookie로 AccessToken 설정
+            Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+            accessTokenCookie.setHttpOnly(true);  // JavaScript 접근 불가 (XSS 방지)
+            accessTokenCookie.setSecure(false);   // 개발 환경: false, 프로덕션: true (HTTPS)
+            accessTokenCookie.setPath("/");
+            accessTokenCookie.setMaxAge(3600);    // 1시간 (초 단위)
+            httpResponse.addCookie(accessTokenCookie);
+            
+            // HttpOnly Cookie로 RefreshToken 설정
+            Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setSecure(false);  // 개발 환경: false, 프로덕션: true
+            refreshTokenCookie.setPath("/");
+            refreshTokenCookie.setMaxAge(1209600); // 14일 (초 단위)
+            httpResponse.addCookie(refreshTokenCookie);
+            
+            response.put("success", true);
+            response.put("message", "로그인에 성공했습니다.");
+            response.put("user", userDto);
+            // 보안을 위해 응답 본문에는 토큰 포함하지 않음
+            
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        } catch (Exception e) {
+            log.error("로그인 오류", e);
+            response.put("success", false);
+            response.put("message", "로그인 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * 로그인 ID 중복 확인
+     * GET /users/checkLoginId?loginId=xxx
+     */
+    @GetMapping("/checkLoginId")
+    public ResponseEntity<Map<String, Object>> checkLoginId(@RequestParam("loginId") String loginId) {
+        Map<String, Object> response = new HashMap<>();
+        
+        boolean exists = userService.checkLoginId(loginId);
+        
+        response.put("exists", exists);
+        response.put("message", exists ? "이미 사용 중인 로그인 ID입니다." : "사용 가능한 로그인 ID입니다.");
+        
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 닉네임 중복 확인
+     * GET /users/checkNickname?nickname=xxx
+     */
+    @GetMapping("/checkNickname")
+    public ResponseEntity<Map<String, Object>> checkNickname(@RequestParam("nickname") String nickname) {
+        Map<String, Object> response = new HashMap<>();
+        
+        boolean exists = userService.checkNickname(nickname);
+        
+        response.put("exists", exists);
+        response.put("message", exists ? "이미 사용 중인 닉네임입니다." : "사용 가능한 닉네임입니다.");
+        
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 로그아웃
+     * POST /users/auth/logout
+     */
+    @PostMapping("/auth/logout")
+    public ResponseEntity<Map<String, Object>> logout(HttpServletResponse httpResponse) {
+        Map<String, Object> response = new HashMap<>();
+        
+        // AccessToken Cookie 삭제
+        Cookie accessTokenCookie = new Cookie("accessToken", null);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(false);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(0);  // 즉시 삭제
+        httpResponse.addCookie(accessTokenCookie);
+        
+        // RefreshToken Cookie 삭제
+        Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(false);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(0);  // 즉시 삭제
+        httpResponse.addCookie(refreshTokenCookie);
+        
+        response.put("success", true);
+        response.put("message", "로그아웃되었습니다.");
+        
+        return ResponseEntity.ok(response);
+    }
+}
+
+
