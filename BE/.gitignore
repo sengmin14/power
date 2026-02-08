@@ -1,20 +1,20 @@
 HELP.md
-.gradle
+*.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-.properties
-.yml
+*.properties
+*.yml
 ### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
+*.apt_generated
+*.classpath
+*.factorypath
+*.project
+*.settings
+*.springBeans
 .sts4-cache
-bin/
+*.bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
