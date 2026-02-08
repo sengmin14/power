@@ -1,0 +1,29 @@
+.footer {
+  width: 100%;           /* 가로를 100% 꽉 채웁니다 */
+  left: 0;               /* 혹시 모를 위치 어긋남 방지 */
+  /*background-color: #f8f9fa;*/ 
+  color: #929292;
+  padding: 15px 0 0;       /* 위아래만 패딩을 주고, 좌우는 container에서 조절 */
+  border-top: 1px solid #eee;
+  margin-top: auto;
+}
+
+.container {
+  /* 실제 내용이 들어가는 부분은 중앙에 모아줍니다 */
+  max-width: 1200px;     /* 너무 넓게 퍼지지 않도록 제한 */
+  margin: 0 auto;        /* 중앙 정렬 */
+  padding: 0 20px;       /* 모바일 등에서 글자가 벽에 붙지 않게 여백 */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* 반응형 (모바일) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
