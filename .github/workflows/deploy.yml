@@ -8,18 +8,41 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: SSH로 EC2에 접속하기
+      - name: SSH로 EC2에 접속하여 배포
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.EC2_HOST }} # EC2의 주소
-          username: ${{ secrets.EC2_USERNAME }} # EC2 접속 username
-          key: ${{ secrets.EC2_PRIVATE_KEY }} # EC2의 Key 파일의 내부 텍스트
-          script_stop: true # 아래 script 중 실패하는 명령이 하나라도 있으면 실패로 처리
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script_stop: true
           script: |
-            cd /home/ubuntu/power # 여기 경로는 자신의 EC2에 맞는 경로로 재작성하기
+            set -e
+
+            echo "📦 Move to project directory"
+            cd /home/ubuntu/power
+
+            echo "📥 Pull latest code"
             git pull origin main
+
+            echo "📂 Move to FE directory"
             cd /home/ubuntu/power/FE
-            sudo fuser -k -n tcp 5173 || true # || true를 붙인 이유는 5173에 종료시킬 프로세스가 없더라도 실패로 처리하지 않기 위해서이다. 
-            # 실행시키는 명령어이다. 그리고 발생하는 로그들을 ./output.log 파일에 남기는 명령어이다.
+
+            echo "🛑 Kill existing Vite server (5173)"
+            sudo fuser -k -n tcp 5173 || true
+
+            echo "🚀 Start Vite dev server"
             nohup npm run dev > vite.log 2>&1 &
+
+            echo "⏳ Waiting for Vite server to be ready (5173)..."
+            for i in {1..20}; do
+              if lsof -i :5173 >/dev/null; then
+                echo "✅ Vite server is up"
+                exit 0
+              fi
+              sleep 1
+            done
+
+            echo "❌ Vite server did not start within 20 seconds"
+            exit 1
