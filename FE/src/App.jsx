@@ -23,6 +23,7 @@ function App() {
         </button>
         <p>
           rhinod, skim, jin001, jin002, jin003
+          , rhinod001
         </p>
       </div>
       
