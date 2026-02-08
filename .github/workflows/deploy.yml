@@ -36,7 +36,7 @@ jobs:
             nohup npm run dev > vite.log 2>&1 &
 
             echo "⏳ Waiting for Vite server to be ready (5173)..."
-            for i in {1..20}; do
+            for i in {1..60}; do
               if lsof -i :5173 >/dev/null; then
                 echo "✅ Vite server is up"
                 exit 0
@@ -44,5 +44,5 @@ jobs:
               sleep 1
             done
 
-            echo "❌ Vite server did not start within 20 seconds"
+            echo "❌ Vite server did not start within 60 seconds"
             exit 1
