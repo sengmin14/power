@@ -22,7 +22,7 @@ function App() {
           count is123 {count}
         </button>
         <p>
-          rhinod, skim
+          rhinod, skim, jin001
         </p>
       </div>
       
