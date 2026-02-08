@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 *.properties
 *.yml
+*.env
 ### STS ###
 *.apt_generated
 *.classpath
