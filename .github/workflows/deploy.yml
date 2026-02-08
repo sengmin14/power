@@ -32,7 +32,7 @@ jobs:
             
 
             echo "🚀 Start Vite dev server"
-            nohup npm run dev > vite.log 2>&1 &
+            nohup npm run dev & > vite.log 2>&1 &
 
             echo "⏳ Waiting for Vite server to be ready (5173)..."
             for i in {1..40}; do
