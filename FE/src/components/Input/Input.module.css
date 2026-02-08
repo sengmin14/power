@@ -1,0 +1,45 @@
+/* 1. 공통 인풋 스타일 (Base) */
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    width: 400px;
+    margin: 10px auto;
+    transition: all 0.2s ease;
+}
+
+/* 2. label 영역 */
+.label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1a1a1a;
+    text-align: left;
+    margin-left: 10px;
+}
+
+/* 3. input 영역 */
+.inputField {
+    padding: 10px;
+    width: 100%;
+    border: 2px solid #1a1a1a;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    
+}
+.inputField:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* 5. 반응형 설정 (Media Query) */
+/* 화면 너비가 768px 이하일 때 (태블릿/모바일) */
+@media (max-width: 768px) {
+  .inputContainer {
+    width: 100%;            /* 화면 너비에 꽉 차게 */
+    max-width: 90vw;        /* 양옆에 살짝 여백 (View Width의 90%) */
+    font-size: 1rem;        /* 글자 크기 조정 */
+    border-radius: 12px;    /* 모바일 화면에 어울리는 곡률 */
+  }
+}

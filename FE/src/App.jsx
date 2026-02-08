@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Button from './components/Button/Button';
 import Footer from './components/Footer/Footer';
+import Input from './components/Input/Input';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,24 +14,6 @@ function App() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <div style={ {flex: 1}}>
-        <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
-        </div>
-        <h1>New React222333444</h1>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is123 {count}
-          </button>
-          <p>
-            rhinod, skim, jin001, jin002, jin003
-            , rhinod001, o94777o
-          </p>
-        </div>
         <div style={{ padding: '20px' }}>
           <Button variant="primary" onClick={handleLogin}>
             Login
@@ -40,6 +23,27 @@ function App() {
             Join
           </Button>
         </div>
+
+        <div style={{ padding: '20px' }}>
+          <Input 
+            label="ID" 
+            type="text"
+            placeholder="ID를 입력해주세요"
+            onChange={e => console.log(e.target.value)}
+          />
+          <Input 
+            label="PW" 
+            type="password"
+            placeholder="PW를 입력해주세요"
+          />
+          <Input 
+            label="E-mail" 
+            type="email"
+            placeholder="E-mail를 입력해주세요"
+          />
+        </div>
+
+
       </div>
       <Footer />  
     </div>
