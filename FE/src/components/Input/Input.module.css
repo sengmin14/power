@@ -3,14 +3,14 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
-    width: 400px;
+    width: 350px;
     margin: 10px auto;
     transition: all 0.2s ease;
 }
 
 /* 2. label 영역 */
 .label {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: bold;
     color: #1a1a1a;
     text-align: left;

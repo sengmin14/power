@@ -1,9 +1,9 @@
 /* 1. 공통 버튼 스타일 (Base) */
 .btn {
   display: block;
-  width: 400px;           /* 데스크탑 기본 너비 */
+  width: 350px;           /* 데스크탑 기본 너비 */
   margin: 10px auto;      /* 중앙 정렬 및 위아래 간격 */
-  padding: 16px 0;        /* 위아래 높이감 */
+  padding: 12px 0;        /* 위아래 높이감 */
   font-family: inherit;   /* 부모 폰트 상속 */
   font-size: 1.1rem;
   font-weight: 600;

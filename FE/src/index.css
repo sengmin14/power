@@ -18,18 +18,13 @@
   /* size 관련 */
   
 }
- 
+
+html, body, #root {
+  height: 100%;
+}
 
 body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-  box-sizing: border-box;
   font-family: var(--primary-font);
-
 }
 
 

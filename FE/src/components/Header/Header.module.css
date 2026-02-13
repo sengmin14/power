@@ -1,5 +1,18 @@
 .header {
-    font-size: 48px;
+    font-size: 64px;
     font-weight: bold;
-    letter-spacing: 10px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+/* 5. 반응형 설정 (Media Query) */
+/* 화면 너비가 768px 이하일 때 (태블릿/모바일) */
+@media (max-width: 768px) {
+  .header {
+    width: 100%;            /* 화면 너비에 꽉 차게 */
+    max-width: 90vw;        /* 양옆에 살짝 여백 (View Width의 90%) */
+    font-weight: bold;
+    font-size: 32px;
+    letter-spacing: 5px;
+  }
 }

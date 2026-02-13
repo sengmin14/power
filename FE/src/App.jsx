@@ -11,38 +11,38 @@ function App() {
 
   return (
 
-    <div>
-      <Header />
-      <div style={{ padding: '20px' }}>
-        <Input 
-          label="ID" 
-          type="text"
-          placeholder="ID를 입력해주세요"
-          onChange={e => console.log(e.target.value)}
-        />
-        <Input 
-          label="PW" 
-          type="password"
-          placeholder="PW를 입력해주세요"
-        />
-      </div>
-      
-      <div style={{ padding: '20px' }}>
-        <Button variant="primary" onClick={handleLogin}>
-          Login
-        </Button>
+    <div className='login-layout'>
+      <div className='login-box'>
+        <Header />
 
-        <Button variant="secondary" onClick={handleJoin}>
-          Join
-        </Button>
-      </div>
+        <div className='login-ipt-box'>
+          <Input 
+            label="ID" 
+            type="text"
+            placeholder="ID"
+            // onChange={e => console.log(e.target.value)}
+          />
+          <Input 
+            label="PW" 
+            type="password"
+            placeholder="Password"
+          />
+        </div>
+        
+        <div className='login-btn-box'>
+          <Button variant="primary" onClick={handleLogin}>
+            Login
+          </Button>
 
-      
+          <Button variant="secondary" onClick={handleJoin}>
+            Join
+          </Button>
+        </div>
 
         <Footer />
+      </div>
+      
     </div>
-
-    
   )
 }
 
