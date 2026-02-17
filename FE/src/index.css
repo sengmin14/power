@@ -16,6 +16,8 @@
   --secondary-color: #ffffff;
 
   /* size 관련 */
+  --common-compo-width: 350px;
+  --common-compo-height: 50px;
   
 }
 

@@ -10,7 +10,7 @@ function App() {
   const handleJoin = () => alert("회원가입 페이지 동미니가 만들거에요");
 
   return (
-
+    
     <div className='login-layout'>
       <div className='login-box'>
         <Header />
@@ -39,7 +39,10 @@ function App() {
           </Button>
         </div>
 
-        <Footer />
+        <div className='footer-box'>
+          <Footer />
+        </div>
+        
       </div>
       
     </div>
