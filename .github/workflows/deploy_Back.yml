@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Debug key lines
+        run: |
+          echo "${{ secrets.BACK_EC2_KEY }}" > key.pem
+          wc -l key.pem
+
       - name: SSH Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
