@@ -29,7 +29,7 @@ jobs:
             echo "📂 Move to FE directory"
             cd /home/ubuntu/power/FE
 
-            cho "npm install 추가 by rhinod"
+            echo "npm install 추가 by rhinod"
             npm install
             
             
