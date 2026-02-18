@@ -20,6 +20,10 @@ jobs:
           script: |
             set -e
 
+            echo "nvm 설정이 자동으로 로드되지 않아서 강제로 불러옴"
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
             echo "📦 Move to project directory"
             cd /home/ubuntu/power
 
