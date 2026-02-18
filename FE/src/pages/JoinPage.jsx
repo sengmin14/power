@@ -26,7 +26,7 @@ const JoinPage = () => {
         // 1. 호출 방식 선택 fetch or axios 회의필요 - 서버 주소 공통화
         // 2. 공통 함수로 api 처리하기 
         // 3. pw 체크 로직
-        // 4. input validation 로직
+        // 4. input validation 로직 
         // 5. 로그인 성공 후 처리
 
         try {
