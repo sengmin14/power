@@ -18,6 +18,9 @@
   /* size 관련 */
   --common-compo-width: 350px;
   --common-compo-height: 50px;
+
+  --login-box-w : 350px;
+  --login-box-h : 500px;
   
 }
 
