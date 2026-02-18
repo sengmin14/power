@@ -1,0 +1,21 @@
+.layoutContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* 화면 전체 높이를 최소 높이로 설정 */
+}
+
+.headerContainer {
+    padding-top: 120px;
+    margin-bottom: 50px;
+}
+
+.mainLayout {
+    margin: 0 auto;
+    width: var(--login-box-w);
+    padding-bottom: 50px;
+}
+
+.footerContainer {
+    margin: 0 auto;
+    width: 600px; 
+}
