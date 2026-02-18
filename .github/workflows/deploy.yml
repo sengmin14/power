@@ -26,12 +26,11 @@ jobs:
             echo "📥 Pull latest code"
             git pull origin main
 
-            echo "npm install 추가 by rhinod"
-            npm install
-
             echo "📂 Move to FE directory"
             cd /home/ubuntu/power/FE
 
+            cho "npm install 추가 by rhinod"
+            npm install
             
             
             echo "🚀 Start Vite dev server"
