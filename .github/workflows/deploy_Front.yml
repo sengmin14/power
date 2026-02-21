@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
+          cache-dependency-path: './FE/package-lock.json' # dependency 변경 시 패키지 다운로드
 
       # 3. 깃헙 서버에서 빌드
       - name: "### [STEP 3.][GitHub Server] - Install Dependencies & Build"
