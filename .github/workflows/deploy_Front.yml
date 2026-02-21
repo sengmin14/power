@@ -26,6 +26,7 @@ jobs:
 
       # 3. 깃헙 서버에서 빌드
       - name: "### [STEP 3.][GitHub Server] - Install Dependencies & Build"
+        working-directory: ./FE
         run: |
           npm install
           npm run build
