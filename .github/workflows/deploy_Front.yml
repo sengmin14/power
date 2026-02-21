@@ -49,9 +49,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "dist/*"        # Vite 사용 시 dist
+          source: "FE/dist/*"        # Vite 사용 시 dist
           target: "/home/ubuntu/power/FE/dist" # EC2에 파일이 저장될 경로
-          strip_components: 1 # [0]: 폴더까지, [1]:알맹이만
+          strip_components: 2
       
       # 6. EC2 접속해서 기존 서버 끄고 다시 띄우기
       - name: "### [STEP 6.][EC2 Server] - Restart Server"
