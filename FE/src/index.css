@@ -5,10 +5,15 @@
   font-weight: normal;
   font-style: normal;
 }
-
+@font-face {
+  font-family: NanumHigh;
+  src: url('./assets/fonts/NanumHand-High.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 :root {
   /* font 관련 */
-  --primary-font: 'PatrickHand', sans-serif;
+  --primary-font: 'PatrickHand', 'NanumHigh', sans-serif;
 
   /* color 관련 */
   --defalut-bg-color: #ffffff;
