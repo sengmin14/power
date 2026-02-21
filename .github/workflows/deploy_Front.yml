@@ -61,10 +61,15 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            echo "[STEP 6-1.] Kill 5173 port"
+
+            echo "[STEP 6-1.] Load NVM environment"
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            echo "[STEP 6-2.] Kill 5173 port"
             fuser -k 5173/tcp || true
             
-            echo "[STEP 6-2.] Screen Session quit"
+            echo "[STEP 6-3.] Screen Session quit"
             screen -X -S react-server quit || true 
 
             # (serve 패키지 사용)
