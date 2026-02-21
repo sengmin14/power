@@ -1,0 +1,76 @@
+# Workflow Name
+name: Deploy To FRONTEND_EC2
+
+# Trigger - main branch push
+on:
+  push:
+    branches:
+      - main
+
+# jobs
+jobs:
+  deploy: # job name 'deploy'
+    runs-on: ubuntu-latest
+    steps:
+
+      # 1. 깃헙 서버에 소스코드 내려받기
+      - name: "### [STEP 1.][GitHub Server] - Checkout Source Code"
+        uses: actions/checkout@v4
+      
+      # 2. 깃헙 서버에 node.js 설치
+      - name: "### [STEP 2.][GitHub Server] - Install Node.js"
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      # 3. 깃헙 서버에서 빌드
+      - name: "### [STEP 3.][GitHub Server] - Install Dependencies & Build"
+        run: |
+          npm install
+          npm run build
+
+      # 4. 빌드 폴더 Clean
+      - name: "### [STEP 4.][EC2 Server] - Clean dist Folder"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            mkdir -p /home/ubuntu/power/FE/dist
+            rm -rf /home/ubuntu/power/FE/dist/*
+
+      # 5. 빌드 결과물 EC2로 복사
+      - name: "### [STEP 5.][GitHub Server] - Copy dist to EC2"
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: "dist/*"        # Vite 사용 시 dist
+          target: "/home/ubuntu/power/FE/dist" # EC2에 파일이 저장될 경로
+          strip_components: 1 # [0]: 폴더까지, [1]:알맹이만
+      
+      # 6. EC2 접속해서 기존 서버 끄고 다시 띄우기
+      - name: "### [STEP 6.][EC2 Server] - Restart Server"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            echo "[STEP 6-1.] Kill 5173 port"
+            fuser -k 5173/tcp || true
+            
+            echo "[STEP 6-2.] Screen Session quit"
+            screen -X -S react-server quit || true 
+
+            # (serve 패키지 사용)
+            # -d -m : 백그라운드 설정
+            # -S : 스크린 세션 이름
+            # -s : SPA 옵션 (모든 경로 요청을 index.html로 보내서 /login 같은 상세 경로로 접속하면 라우터로 받아짐)
+            # -l : 리스닝 포트번호
+            echo "[STEP 6-3.] 5173 port serving"
+            screen -d -m -S react-server serve -s /home/ubuntu/power/FE/dist -l 5173
+  
