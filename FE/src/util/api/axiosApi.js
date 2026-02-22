@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://15.164.100.162:8080', 
-  timeout: 5000,                  
+  timeout: 5000,
+  withCredentials: true,                    
   headers: {
     'Content-Type': 'application/json',
   },
