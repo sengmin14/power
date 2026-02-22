@@ -23,8 +23,15 @@ const JoinPage = () => {
     // 비밀번호 일치 여부 검증 데이터 (Password Confirmation Validation)
     const [passwordValidation, setPasswordValidation] = useState({
         isMatch : false,
-        showError : false,
-        showText : "비밀번호가 일치하지 않습니다."
+        showText : false,
+        message : "비밀번호가 일치하지 않습니다.",
+        color : "red"
+    });
+
+    // id, nickname 등 유효성 검사가 필요한 데이터
+    const [checkField, setCheckField] = useState({
+        loginId  : { showText: false, exists: false, message: "", color: ""},
+        nickname : { showText: false, exists: false, message: "", color: ""}
     });
 
     // Input 컴포넌트 change 이벤트
@@ -42,7 +49,7 @@ const JoinPage = () => {
         setPasswordValidation({
             ...passwordValidation,
             isMatch: isMatch,
-            showError: !isMatch  // && signData.passwordConfirm.length > 0
+            showText: !isMatch  // && signData.passwordConfirm.length > 0
         });
     }, [signData.password, signData.passwordConfirm]);
 
@@ -55,31 +62,39 @@ const JoinPage = () => {
         };
 
         for(const item of Object.keys(signData)) {
-            if( item !== 'passwordConfirm' ) {
-                if( cmnUtil.isEmpty( signData[item] ) ) {
-                    const convertKr = item === 'loginId'  ? '아이디를' 
-                                    : item === 'password' ? '비밀번호를' 
-                                    : item === 'email'    ? '이메일을'
-                                    : item === 'nickname' ? '닉네임을' : '새로운 필드를';
-                    result.isError = true;
-                    result.message = convertKr + "입력해주세요";
-                    break;
-                }
-            }
-            else {
-                if( !passwordValidation.isMatch ) {
-                    result.isError = true;
-                    result.message = passwordValidation.showText;
-                    break;
-                }
+            if( cmnUtil.isEmpty( signData[item] ) ) {
+                const convertKr = item === 'loginId'  ? '아이디란을' 
+                                : item === 'password' ? '비밀번호란을' 
+                                : item === 'passwordConfirm' ? '비밀번호 확인란을'
+                                : item === 'email'    ? '이메일란을'
+                                : item === 'nickname' ? '닉네임란을' : '새로운 필드란을';
+                result.isError = true;
+                result.message = convertKr + "입력해주세요";
+                return result;
             }
         }
+
+        // id 중복확인
+        if(checkField.loginId.exists === true) {
+            result.isError = true;
+            result.message = checkField.loginId.message;
+        }
+        // 비밀번호 비교
+        else if(!passwordValidation.isMatch) {
+            result.isError = true;
+            result.message = passwordValidation.message;
+        }
+        // nickname 중복확인
+        else if(checkField.nickname.exists === true) {
+            result.isError = true;
+            result.message = checkField.nickname.message;
+        }
+
         return result;
     }
 
     // 회원가입 버튼 클릭
     const handleSignUp = async () => {
-
         const validResult = joinValidation();
 
         if(validResult.isError) {
@@ -97,33 +112,73 @@ const JoinPage = () => {
             }
         }
         catch(error) {
-            console.log(error);
             errorUtil.errorProcess(error);
+        }
+    }
+
+    // 포커스 아웃 시 동작하는 함수
+    const handleOnBlur = async (e) => {
+        if(e.target.value !== "") {
+            const paramMap = {
+                name : e.target.name,
+                data : {
+                    [e.target.name] : e.target.value
+                }
+            }
+
+            try {
+                const result = await joinService.checkField(paramMap);
+                setCheckField(prev => {
+                    const newState = {
+                        ...prev,
+                        [paramMap.name]: {
+                            ...result,
+                            showText: true,
+                            color: result.exists ? "red" : "green"
+                        }
+                    }
+                    return newState;
+                });
+            } 
+            catch (error) {
+                errorUtil.errorProcess(error);
+            }
+        }
+        // 필드 값이 없을 경우
+        else {
+            setCheckField({
+                loginId  : { showText: false, exist: false, message: "", color: ""},
+                nickname : { showText: false, exist: false, message: "", color: ""}
+            });
         }
     }
 
     return(
         <div>
-            <Input label="ID " type="text" placeholder="ID" 
+            <Input name="loginId" label="ID " type="text" placeholder="ID" 
                 value={signData.loginId} 
                 onChange={ e => handleChange(e, "loginId")}
+                onBlur={ e => handleOnBlur(e)}
+                validation={checkField.loginId}
             />
-            <Input label="PW" type="password" placeholder="Password"  
+            <Input name="password" label="PW" type="password" placeholder="Password"  
                 value={signData.password} 
                 onChange={ e => handleChange(e, "password")}
             />
-            <Input label="PW CHECK" type="password" placeholder="Password Check"
+            <Input name="passwordConfirm" label="PW CHECK" type="password" placeholder="Password Check"
                 value={signData.passwordConfirm} 
-                validation={passwordValidation}
                 onChange={ e => handleChange(e, "passwordConfirm")}
+                validation={passwordValidation}
             />
-            <Input label="E-MAIL" type="email" placeholder="E-MAIL" 
+            <Input name="email" label="E-MAIL" type="email" placeholder="E-MAIL" 
                 value={signData.email}
                 onChange={ e => handleChange(e, "email")}
             />
-            <Input label="NICK NAME" type="text" placeholder="NICK NAME" 
+            <Input name="nickname" label="NICK NAME" type="text" placeholder="NICK NAME" 
                 value={signData.nickname} 
                 onChange={ e => handleChange(e, "nickname")}
+                onBlur={ e => handleOnBlur(e)}
+                validation={checkField.nickname}
             />
 
             <Button onClick={handleSignUp} >Sign Up</Button>
