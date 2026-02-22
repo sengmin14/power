@@ -1,4 +1,4 @@
-import api from '../axiosApi';
+import api from '../../axiosApi';
 
 export const joinService = {
     join: (joinData) => {
