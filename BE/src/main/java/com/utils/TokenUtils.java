@@ -242,10 +242,14 @@ public class TokenUtils {
     public static UserDto getClaimsToAllUserDto(String token, boolean isRefreshToken) {
         Claims claims = getTokenToClaims(token);
         UserDto userDto = new UserDto();
-        userDto.setUserId(Long.parseLong(claims.get("userId").toString()));
-        userDto.setLoginId(claims.get("loginId").toString());
-        userDto.setNickname(claims.get("nickname").toString());
-        userDto.setEmail(claims.get("email").toString());
+
+        // test
+        userDto.setLoginId("test");
+
+        // userDto.setUserId(Long.parseLong(claims.get("userId").toString()));
+        // userDto.setLoginId(claims.get("loginId").toString());
+        // userDto.setNickname(claims.get("nickname").toString());
+        // userDto.setEmail(claims.get("email").toString());
         // userDto.setRole(UserDto.Role.valueOf(claims.get("role").toString()));
         // userDto.setCreatedAt(LocalDateTime.parse(claims.get("createdAt").toString()));
         return userDto;
