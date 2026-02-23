@@ -1,10 +1,13 @@
 package com.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import javax.crypto.SecretKey;
@@ -224,7 +227,7 @@ public class TokenUtils {
      * @param cookieName Cookie 이름
      * @return 토큰 문자열
      */
-    private String getTokenFromCookie(HttpServletRequest request, String cookieName) {
+    public static String getTokenFromCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -234,5 +237,17 @@ public class TokenUtils {
             }
         }
         return null;
+    }
+
+    public static UserDto getClaimsToAllUserDto(String token, boolean isRefreshToken) {
+        Claims claims = getTokenToClaims(token);
+        UserDto userDto = new UserDto();
+        userDto.setUserId(Long.parseLong(claims.get("userId").toString()));
+        userDto.setLoginId(claims.get("loginId").toString());
+        userDto.setNickname(claims.get("nickname").toString());
+        userDto.setEmail(claims.get("email").toString());
+        userDto.setRole(UserDto.Role.valueOf(claims.get("role").toString()));
+        userDto.setCreatedAt(LocalDateTime.parse(claims.get("createdAt").toString()));
+        return userDto;
     }
 }

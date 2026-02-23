@@ -3,7 +3,10 @@ package com.catchMind.user.controller;
 import com.catchMind.user.dto.UserDto;
 import com.catchMind.user.service.UserService;
 import com.utils.TokenUtils;
+import com.utils.dto.ValidTokenDto;
+
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -178,14 +181,14 @@ public class AuthController {
      * GET /users/auth/me
      */
     @PostMapping("/auth/me")
-    public ResponseEntity<Map<String, Object>> me(HttpServletResponse httpResponse) {
+    public ResponseEntity<Map<String, Object>> me(HttpServletRequest httpRequest) {
         Map<String, Object> response = new HashMap<>();
         
         // accessToken 나중에 TokenUtils로 옮겨서 상수 관리해보자
         String tokenName = "accessToken";
 
         // accessToken 추출
-        String accessToken = TokenUtils.getTokenFromCookie(httpResponse, tokenName);
+        String accessToken = TokenUtils.getTokenFromCookie(httpRequest, tokenName);
 
         // 토큰 존재 여부 확인
         if (accessToken == null) {
@@ -203,20 +206,12 @@ public class AuthController {
         }
 
         // accessToken으로 UserDto 생성
-        Claims claims = getTokenToClaims(accessToken);
-        UserDto userDto = new UserDto();
-        userDto.setUserId(Long.parseLong(claims.get("userId").toString()));
-        userDto.setLoginId(claims.get("loginId").toString());
-        userDto.setNickname(claims.get("nickname").toString());
-        userDto.setEmail(claims.get("email").toString());
-        userDto.setRole(UserDto.Role.valueOf(claims.get("role").toString()));
-        userDto.setCreatedAt(LocalDateTime.parse(claims.get("createdAt").toString()));
-
+        UserDto userDto = TokenUtils.getClaimsToAllUserDto(accessToken, false);
         response.put("success", true);
         response.put("message", "확인된 사용자입니다.");
         response.put("user", userDto);
 
-        ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 }
 
