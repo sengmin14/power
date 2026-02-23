@@ -10,9 +10,9 @@
 @media (max-width: 768px) {
   .header {
     width: 100%;            /* 화면 너비에 꽉 차게 */
-    max-width: 90vw;        /* 양옆에 살짝 여백 (View Width의 90%) */
     font-weight: bold;
     font-size: 32px;
     letter-spacing: 5px;
+    text-align: center;
   }
 }

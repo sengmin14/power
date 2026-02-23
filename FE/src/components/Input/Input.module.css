@@ -36,9 +36,14 @@
 /* 화면 너비가 768px 이하일 때 (태블릿/모바일) */
 @media (max-width: 768px) {
   .inputContainer {
-    width: 100%;            /* 화면 너비에 꽉 차게 */
-    max-width: 90vw;        /* 양옆에 살짝 여백 (View Width의 90%) */
+    margin: 0 auto;
     font-size: 1rem;        /* 글자 크기 조정 */
     border-radius: 12px;    /* 모바일 화면에 어울리는 곡률 */
+  }
+
+  .inputField {
+    width: 100%;            /* 화면 너비에 꽉 차게 */
+    max-width: 90vw;        /* 양옆에 살짝 여백 (View Width의 90%) */
+    margin: 0 auto;
   }
 }
