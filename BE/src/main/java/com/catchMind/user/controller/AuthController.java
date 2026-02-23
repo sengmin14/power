@@ -180,7 +180,7 @@ public class AuthController {
      * 현재 사용자 확인
      * GET /users/auth/me
      */
-    @PostMapping("/auth/me")
+    @GetMapping("/auth/me")
     public ResponseEntity<Map<String, Object>> me(HttpServletRequest httpRequest) {
 
         System.out.println("me in !!! test");

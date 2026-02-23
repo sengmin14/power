@@ -68,6 +68,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             // [STEP2] Cookie 또는 Header에서 토큰 추출
             String accessToken = getTokenFromCookie(request, ACCESS_TOKEN_COOKIE_NAME);
             String refreshToken = getTokenFromCookie(request, REFRESH_TOKEN_COOKIE_NAME);
+
+            System.out.println("### accessToken :: " + accessToken);
             
             // Cookie에 토큰이 없으면 Header에서 확인 (하위 호환성)
             if (StringUtils.isBlank(accessToken)) {
