@@ -17,7 +17,7 @@ export const errorUtil = {
         switch (status) {
             case 401:
                 alert(message);
-                // window.location.href = "/login";
+                window.location.href = "/";
                 break;
             case 403:
                 alert("err 403");

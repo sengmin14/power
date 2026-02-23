@@ -215,4 +215,23 @@ public class TokenUtils {
         userDto.setNickname(claims.get("nickname").toString());
         return userDto;
     }
+
+    /**
+     * Cookie에서 토큰을 추출하는 메서드
+     *
+     * @param request HttpServletRequest
+     * @param cookieName Cookie 이름
+     * @return 토큰 문자열
+     */
+    private String getTokenFromCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

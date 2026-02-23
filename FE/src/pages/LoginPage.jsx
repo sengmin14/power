@@ -37,7 +37,6 @@ const LoginPage = () => {
 
         try {
             const result = await loginService.login(loginData);
-            console.log("login result :: ", result);
 
             // 로그인 성공 후 이동
             if(result.success) {

@@ -13,10 +13,7 @@ const MainPage = () => {
     const handleClickLogout = async () => {
 
         try {
-
             const result = await mainService.logout();
-
-            console.log("### logout resutl :: ",result);
 
             if(result.success){
                 setLogout();
@@ -24,8 +21,6 @@ const MainPage = () => {
                 navigate("/");
             }
         } catch (error) {
-
-            console.log(error);
             errorUtil.errorProcess(error);
         }
     }
@@ -40,3 +35,7 @@ const MainPage = () => {
 }
 
 export default MainPage;
+
+// Zustand 에서 유저 정보 꺼내보기
+// 새로고침 대응
+// 직접 주소 치고 오는 놈 조지기

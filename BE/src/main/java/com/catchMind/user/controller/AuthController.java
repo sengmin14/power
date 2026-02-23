@@ -172,6 +172,52 @@ public class AuthController {
         
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * 현재 사용자 확인
+     * GET /users/auth/me
+     */
+    @PostMapping("/auth/me")
+    public ResponseEntity<Map<String, Object>> me(HttpServletResponse httpResponse) {
+        Map<String, Object> response = new HashMap<>();
+        
+        // accessToken 나중에 TokenUtils로 옮겨서 상수 관리해보자
+        String tokenName = "accessToken";
+
+        // accessToken 추출
+        String accessToken = TokenUtils.getTokenFromCookie(httpResponse, tokenName);
+
+        // 토큰 존재 여부 확인
+        if (accessToken == null) {
+            response.put("success", false);
+            response.put("message", "토큰이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // 토큰 유효성 검사
+        ValidTokenDto tokenStatus = TokenUtils.isValidToken(accessToken);
+        if (!tokenStatus.isValid()) {
+            response.put("success", false);
+            response.put("message", "토큰이 유효하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // accessToken으로 UserDto 생성
+        Claims claims = getTokenToClaims(accessToken);
+        UserDto userDto = new UserDto();
+        userDto.setUserId(Long.parseLong(claims.get("userId").toString()));
+        userDto.setLoginId(claims.get("loginId").toString());
+        userDto.setNickname(claims.get("nickname").toString());
+        userDto.setEmail(claims.get("email").toString());
+        userDto.setRole(UserDto.Role.valueOf(claims.get("role").toString()));
+        userDto.setCreatedAt(LocalDateTime.parse(claims.get("createdAt").toString()));
+
+        response.put("success", true);
+        response.put("message", "확인된 사용자입니다.");
+        response.put("user", userDto);
+
+        ResponseEntity.ok(response);
+    }
 }
 
 
