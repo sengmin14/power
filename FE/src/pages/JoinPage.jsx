@@ -155,29 +155,29 @@ const JoinPage = () => {
 
     return(
         <div>
-            <Input name="loginId" label="ID " type="text" placeholder="ID" 
+            <Input id="loginId" name="loginId" label="ID " type="text" placeholder="ID" 
                 value={signData.loginId} 
                 onChange={ e => handleChange(e, "loginId")}
-                onBlur={ e => handleOnBlur(e)}
+                onBlur={handleOnBlur}
                 validation={checkField.loginId}
             />
-            <Input name="password" label="PW" type="password" placeholder="Password"  
+            <Input id="password" name="password" label="PW" type="password" placeholder="Password"  
                 value={signData.password} 
                 onChange={ e => handleChange(e, "password")}
             />
-            <Input name="passwordConfirm" label="PW CHECK" type="password" placeholder="Password Check"
+            <Input id="passwordConfirm" name="passwordConfirm" label="PW CHECK" type="password" placeholder="Password Check"
                 value={signData.passwordConfirm} 
                 onChange={ e => handleChange(e, "passwordConfirm")}
                 validation={passwordValidation}
             />
-            <Input name="email" label="E-MAIL" type="email" placeholder="E-MAIL" 
+            <Input id="email" name="email" label="E-MAIL" type="email" placeholder="E-MAIL" 
                 value={signData.email}
                 onChange={ e => handleChange(e, "email")}
             />
-            <Input name="nickname" label="NICK NAME" type="text" placeholder="NICK NAME" 
+            <Input id="nickname" name="nickname" label="NICK NAME" type="text" placeholder="NICK NAME" 
                 value={signData.nickname} 
                 onChange={ e => handleChange(e, "nickname")}
-                onBlur={ e => handleOnBlur(e)}
+                onBlur={handleOnBlur}
                 validation={checkField.nickname}
             />
 
