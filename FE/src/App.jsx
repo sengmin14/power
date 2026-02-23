@@ -27,6 +27,7 @@ function App() {
         errorUtil.errorProcess(error);
       }
     }
+    initAuth();
   },[setLogin]);
 
   return (

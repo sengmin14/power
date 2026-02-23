@@ -182,6 +182,8 @@ public class AuthController {
      */
     @PostMapping("/auth/me")
     public ResponseEntity<Map<String, Object>> me(HttpServletRequest httpRequest) {
+
+        System.out.println("me in !!! test");
         Map<String, Object> response = new HashMap<>();
         
         // accessToken 나중에 TokenUtils로 옮겨서 상수 관리해보자
