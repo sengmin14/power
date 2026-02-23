@@ -213,10 +213,15 @@ public class TokenUtils {
      */
     public static UserDto getClaimsToUserDto(String token, boolean isRefreshToken) {
         Claims claims = getTokenToClaims(token);
+
+        System.out.println("### Claims 내용 123 여기서 다 찍히면 젤 좋음: " + claims);
+
         UserDto userDto = new UserDto();
         userDto.setUserId(Long.parseLong(claims.get("userId").toString()));
         userDto.setEmail(claims.get("email").toString());
         userDto.setNickname(claims.get("nickname").toString());
+
+        // ############################### 여기서 다 넣어주면 패스워드 빼고 하면 아래 getClaimsToAllUserDto 안쓰고 /auth/me 여기에 가져다 쓸 수 있을 듯 왜 3개 했는지 이유가 있으려나
         return userDto;
     }
 
@@ -246,7 +251,8 @@ public class TokenUtils {
        
         System.out.println("### Claims 내용: " + claims);
 
-        // test
+        // test  ### Claims 내용: {nickname=1234124, userId=37, email=1234@1231212312, sub=37, exp=1771865077}
+
         userDto.setLoginId("test");
 
         // userDto.setUserId(Long.parseLong(claims.get("userId").toString()));

@@ -208,7 +208,7 @@ public class AuthController {
         }
 
         // accessToken으로 UserDto 생성
-        UserDto userDto = TokenUtils.getClaimsToAllUserDto(accessToken, false);
+        UserDto userDto = TokenUtils.getClaimsToUserDto(accessToken, false);
         response.put("success", true);
         response.put("message", "확인된 사용자입니다.");
         response.put("user", userDto);
