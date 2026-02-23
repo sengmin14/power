@@ -243,6 +243,9 @@ public class TokenUtils {
         Claims claims = getTokenToClaims(token);
         UserDto userDto = new UserDto();
 
+       
+        System.out.println("### Claims 내용: " + claims);
+
         // test
         userDto.setLoginId("test");
 
