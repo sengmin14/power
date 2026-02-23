@@ -246,8 +246,8 @@ public class TokenUtils {
         userDto.setLoginId(claims.get("loginId").toString());
         userDto.setNickname(claims.get("nickname").toString());
         userDto.setEmail(claims.get("email").toString());
-        userDto.setRole(UserDto.Role.valueOf(claims.get("role").toString()));
-        userDto.setCreatedAt(LocalDateTime.parse(claims.get("createdAt").toString()));
+        // userDto.setRole(UserDto.Role.valueOf(claims.get("role").toString()));
+        // userDto.setCreatedAt(LocalDateTime.parse(claims.get("createdAt").toString()));
         return userDto;
     }
 }

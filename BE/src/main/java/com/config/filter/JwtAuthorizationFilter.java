@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -219,16 +218,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         accessTokenCookie.setPath("/");
         accessTokenCookie.setMaxAge(3600);  // 1시간
         response.addCookie(accessTokenCookie);
-
-        // ResponseCookie로 sameSite Lax 설정 변경 (지금은 로컬에서 서버로 쿠키 못들고감.. ㅠㅠ)
-        // ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, token)
-        //     .path("/")
-        //     .httpOnly(true)
-        //     .secure(false)      // 로컬/IP 환경이므로 false (운영 HTTPS 환경에선 true)
-        //     .maxAge(3600)
-        //     .sameSite("Lax")    // SameSite 설정 추가
-        //     .build();
-        // response.addHeader("Set-Cookie", cookie.toString());
         
         // 응답 본문에는 토큰 포함하지 않음 (보안)
         response.setCharacterEncoding("UTF-8");
