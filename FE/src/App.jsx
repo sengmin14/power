@@ -16,6 +16,7 @@ function App() {
   useEffect(()=>{
     const initAuth = async () => {
       try {
+        console.log("현재 브라우저에 저장된 쿠키:", document.cookie);
         const result = await loginService.me();
         console.log("### who am i result :: ", result);
 
