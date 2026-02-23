@@ -42,6 +42,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private static final List<String> WHITELIST_URLS = Arrays.asList(
             "/users/auth/signup",
             "/users/auth/login",
+            "/users/auth/logout",
             "/users/checkLoginId",
             "/users/checkNickname",
             "/api/employees",
