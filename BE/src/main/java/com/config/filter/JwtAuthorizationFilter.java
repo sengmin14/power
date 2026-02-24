@@ -213,21 +213,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
      */
     private void sendToClientAccessToken(String token, HttpServletResponse response) {
         // HttpOnly Cookie로 새 AccessToken 설정
-        // Cookie accessTokenCookie = new Cookie(ACCESS_TOKEN_COOKIE_NAME, token);
-        // accessTokenCookie.setHttpOnly(true);
-        // accessTokenCookie.setSecure(false);  // 개발 환경: false, 프로덕션: true
-        // accessTokenCookie.setPath("/");
-        // accessTokenCookie.setMaxAge(3600);  // 1시간
-        // response.addCookie(accessTokenCookie);
+        Cookie accessTokenCookie = new Cookie(ACCESS_TOKEN_COOKIE_NAME, token);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(false);  // 개발 환경: false, 프로덕션: true
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge(3600);  // 1시간
+        response.addCookie(accessTokenCookie);
 
-        ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, token)
-                .path("/")
-                .httpOnly(true)
-                .secure(false)     // HTTPS가 아니라면 반드시 false
-                .maxAge(3600)
-                .sameSite("Lax")   
-                .build();
-        response.addHeader("Set-Cookie", cookie.toString());
+        // ResponseCookie cookie = ResponseCookie.from(ACCESS_TOKEN_COOKIE_NAME, token)
+        //         .path("/")
+        //         .httpOnly(true)
+        //         .secure(false)     // HTTPS가 아니라면 반드시 false
+        //         .maxAge(3600)
+        //         .sameSite("Lax")   
+        //         .build();
+        // response.addHeader("Set-Cookie", cookie.toString());
         
         // 응답 본문에는 토큰 포함하지 않음 (보안)
         response.setCharacterEncoding("UTF-8");
