@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api', // 'http://15.164.100.162:8080', 
+  
+  // npm run dev 실행 시: Vite가 자동으로 .env.development를 읽어서 baseURL을 /api로 설정합니다. (프록시 작동)
+  // npm run build 실행 시: Vite가 자동으로 .env.production을 읽어서 baseURL을 백엔드 IP 주소로 고정하여 빌드합니다. (운영 환경용)
+  baseURL: import.meta.env.VITE_API_BASE_URL,  
   timeout: 5000,
   withCredentials: true,                    
   headers: {
