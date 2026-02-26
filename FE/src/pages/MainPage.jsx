@@ -18,7 +18,9 @@ const MainPage = () => {
             if(result.success){
                 setLogout();
                 alert(result.message);
-                navigate("/");
+
+                // 뒤로가기 기록 남기지 않음
+                navigate("/", {replace: true});
             }
         } catch (error) {
             errorUtil.errorProcess(error);

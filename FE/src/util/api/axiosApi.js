@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useAuthStore } from '../../store/authStore';
 
 const api = axios.create({
   
@@ -23,7 +24,10 @@ api.interceptors.response.use(
     if(response?.status === 401) {
       // 로그인, 회원가입 api 호출 후 401은 그냥 리턴
       if (config.url.includes('/users/auth/signup') || config.url.includes('/users/auth/login')) {
-        console.log("### test 로그인 회원가입 페이지에서 401 오류 뜬 경우 그냥 리턴 함");
+        console.log("### test 로그인 회원가입 페이지에서 401 오류 뜬 경우 로그아웃 후 리턴 함");
+
+        // 세션 만료 후 401 오류 받으면 로그아웃 처리
+        useAuthStore.getState().setLogout();
         return Promise.reject(error);
       }
 
